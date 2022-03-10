@@ -32,11 +32,11 @@ const newUser = asyncHandler(async (req, res, next) => {
   })
   await newUser.save();
 
-  await client.messages.create({
-    body: `Mobi Khata: Your OTP is ${otp}. please dont share with anyone`,
-    from: '+16812486771',
-    to: "+923057777911"
-  })
+  // await client.messages.create({
+  //   body: `Mobi Khata: Your OTP is ${otp}. please dont share with anyone`,
+  //   from: '+16812486771',
+  //   to: "+923057777911"
+  // })
 
   res.status(201).send({ message: "Otp Generated" });
 });
@@ -109,11 +109,11 @@ const reset = asyncHandler(async (req, res, next) => {
     throw new Error("user is not found")
   } else if (!otp && !pin) {
 
-    await client.messages.create({
-      body: `Mobi Khata: Your OTP is ${otp}. please dont share with anyone`,
-      from: '+16812486771',
-      to: "+923057777911"
-    })
+    // await client.messages.create({
+    //   body: `Mobi Khata: Your OTP is ${otp}. please dont share with anyone`,
+    //   from: '+16812486771',
+    //   to: "+923057777911"
+    // })
 
 
     user.otp = randomOtp;
