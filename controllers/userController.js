@@ -108,16 +108,8 @@ const reset = asyncHandler(async (req, res, next) => {
   if (!user) {
     throw new Error("user is not found")
   } else if (!otp && !pin) {
-
-    // await client.messages.create({
-    //   body: `Mobi Khata: Your OTP is ${otp}. please dont share with anyone`,
-    //   from: '+16812486771',
-    //   to: "+923057777911"
-    // })
-
-
     user.otp = randomOtp;
-    console.log(user);
+    // console.log(user);
     await user.save();
     res.send("otp generated");
   } else if (!pin && phone && otp) {
@@ -137,6 +129,26 @@ const reset = asyncHandler(async (req, res, next) => {
   }
 });
 
+/*
+@desc     change pin  
+@route    Post /api/users/changePin
+@access   private
+*/
+const changePin = asyncHandler(async (req, res, next) => {
+  const { pin, newPin } = req.body;
+  const user = req.user;
+  console.log(user);
+  const newUser = await User.findByCredentials(user.phone, pin)
+  if (newUser) {
+    user.pin = newPin;
+    await user.save();
+    res.status(200).send("Pin is changed")
+  } else {
+    res.status(401).send("Pin is not matched");
+    throw new Error("Pin is not matched");
+  }
+});
 
 
-module.exports = { newUser, verifyNewUserOtp, createUserPin, login, reset };
+
+module.exports = { newUser, verifyNewUserOtp, createUserPin, login, reset, changePin };
