@@ -8,7 +8,7 @@ const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWI
 @route    POST /api/users/genrateotp
 @access   public
 */
-const newUser = asyncHandler(async (req, res, next) => {
+const newUser = asyncHandler(async (req, res) => {
   const { phone } = req.body;
   const user = await User.findOne({ phone });
   const newUsers = await NewUser.find({ phone });
@@ -109,7 +109,6 @@ const reset = asyncHandler(async (req, res, next) => {
     throw new Error("user is not found")
   } else if (!otp && !pin) {
     user.otp = randomOtp;
-    // console.log(user);
     await user.save();
     res.send("otp generated");
   } else if (!pin && phone && otp) {
@@ -137,7 +136,6 @@ const reset = asyncHandler(async (req, res, next) => {
 const changePin = asyncHandler(async (req, res, next) => {
   const { pin, newPin } = req.body;
   const user = req.user;
-  console.log(user);
   const newUser = await User.findByCredentials(user.phone, pin)
   if (newUser) {
     user.pin = newPin;

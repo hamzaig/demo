@@ -9,7 +9,6 @@ const protect = asyncHandler(async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.decode(token);
       req.user = await User.findById(decoded._id).select("-pin");
-      console.log(req.user);
       // next();`
     } catch (e) {
       res.status(401);
